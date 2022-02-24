@@ -30,10 +30,13 @@ VPATH += $${SRC_DIR} $${SRC_WIDGETS_DIR} $${INCLUDE_DIR} $${INCLUDE_WIDGETS_DIR}
 
 SOURCES += \
 	mainwindow.cpp \
-	main.cpp
+	main.cpp \
+	src/ColorPair.cpp
 
 HEADERS += \
+    include/ColorPair.h \
 	mainwindow.h \
+    src/colorpair.h
 
 FORMS += \
 	mainwindow.ui
