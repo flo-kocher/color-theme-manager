@@ -27,7 +27,7 @@
      <string notr="true">background-color:white</string>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="vue_principale">
      <widget class="QWidget" name="gridWidget_2" native="true">
@@ -442,7 +442,7 @@ p, li { white-space: pre-wrap; }
      <zorder>lineEdit</zorder>
      <zorder>progressBar</zorder>
     </widget>
-    <widget class="QWidget" name="applique_theme">
+    <widget class="QWidget" name="appliquer_theme">
      <widget class="QLineEdit" name="lineEdit_2">
       <property name="geometry">
        <rect>
@@ -775,6 +775,45 @@ p, li { white-space: pre-wrap; }
         <string>Chercher nom d'un thème</string>
        </property>
       </widget>
+      <widget class="QLabel" name="label_51">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>120</y>
+         <width>131</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Nom du fichier / projet :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_19">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>120</y>
+         <width>381</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>eg. chat.png</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_23">
+       <property name="geometry">
+        <rect>
+         <x>690</x>
+         <y>120</y>
+         <width>89</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Parcourir...</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QLineEdit" name="lineEdit_5">
       <property name="geometry">
@@ -803,7 +842,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="cree_theme">
+    <widget class="QWidget" name="creer_theme">
      <widget class="QTabWidget" name="tabWidget_3">
       <property name="geometry">
        <rect>
@@ -817,9 +856,9 @@ p, li { white-space: pre-wrap; }
        <string notr="true"/>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
-      <widget class="QWidget" name="tabWidget_3Page1" native="true">
+      <widget class="QWidget" name="tabWidget_3Page1">
        <attribute name="title">
         <string/>
        </attribute>

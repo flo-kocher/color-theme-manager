@@ -39,7 +39,6 @@ HEADERS += \
     src/colorpair.h
 
 FORMS += \
-	applythemewindow.ui \
 	mainwindow.ui
 
 # Default rules for deployment.

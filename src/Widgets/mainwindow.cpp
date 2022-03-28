@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <iostream>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QDir>
 
 MainWindow::MainWindow(QWidget *parent)
 	:QMainWindow(parent),
@@ -64,5 +67,17 @@ void MainWindow::on_pushButton_15_clicked()
 void MainWindow::on_pushButton_13_clicked()
 {
     ui->stackedWidget->setCurrentIndex(1);
+}
+
+
+void MainWindow::on_pushButton_23_clicked()
+{
+
+    QString file_name = QFileDialog::getOpenFileName(this, "Open a file", QDir::homePath());
+    //QMessageBox::information(this,"..",file_name);
+    ui->lineEdit_19->setText(file_name);
+
+
+    //ui->lineEdit_19->setText("Incroyanle");
 }
 
