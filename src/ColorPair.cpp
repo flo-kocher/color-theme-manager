@@ -16,7 +16,7 @@ ColorPair::ColorPair(const QString &id){
     m_id = id;
 }
 
-static QString toRGBA(const QColor &color){
+QString ColorPair::toRGBA(const QColor &color){
     QString argb = color.name(QColor::HexArgb);
     QString rgb = color.name(QColor::HexRgb);
 
@@ -26,7 +26,7 @@ static QString toRGBA(const QColor &color){
     return rgb+argb;
 }
 
-static QColor fromRGBA(const QString &colorStr){
+QColor ColorPair::fromRGBA(const QString &colorStr){
     QColor color;
     QString first_part = colorStr;
     QString cp_colorStr = colorStr;
@@ -60,4 +60,43 @@ void ColorPair::setColor1(QColor &color){
 }
 void ColorPair::setColor2(QColor &color){
     color2 = color;
+}
+
+bool CompareColorPair::operator()(ColorPair pair1,ColorPair pair2) const{
+    if(pair1.getId() < pair2.getId())
+        return true;
+    else
+        return false;
+}
+
+XMLReader::XMLReader(const set<ColorPair,CompareColorPair> &compare){
+    set_compare = compare;
+}
+
+set<ColorPair,CompareColorPair> XMLReader::getSet(){
+    return set_compare;
+}
+
+void XMLReader::read(const QString &filename){
+    QFile file(filename);
+    file.open(stderr,QIODevice::ReadOnly | QFile::Text);
+    //lire ligne par ligne et genre stocker les balises dans un ColorPair/jsplus quoi et les mettre dans le set
+
+
+/*
+    QXmlStreamReader reader;
+    reader.setDevice(&file);
+    reader.readNext();
+    reader.readNext();
+    reader.readNext();
+    qDebug()<<reader.readElementText();
+
+    while(!reader.atEnd()){
+        if(reader.isStartElement() == false){
+            if(reader.name() == "colors"){
+                reader.readNext();
+            }
+        }
+    }
+    */
 }
