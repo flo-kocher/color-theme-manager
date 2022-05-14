@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QListWidgetItem>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,7 +16,13 @@ public:
 	MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
 
+    void dragEnterEvent(QDragEnterEvent *e) override;
+    void dropEvent(QDropEvent *e) override;
+
+
 private slots:
+
+    void synchronize_notifications(QString text);
 
     void on_pushButton_4_clicked();
 
@@ -31,7 +38,24 @@ private slots:
 
     void on_pushButton_23_clicked();
 
+    void on_listWidget_itemClicked(QListWidgetItem *item);
+
+    void on_pushButton_clicked();
+
+    void on_pushButton_7_clicked();
+
+    void on_pushButton_8_clicked();
+
+    void on_pushButton_6_clicked();
+
+    void on_pushButton_9_clicked();
+
+    void on_pushButton_2_clicked();
+
+    void on_pushButton_16_clicked();
+
 private:
 	Ui::MainWindow *ui;
+
 };
 #endif // MAINWINDOW_H

@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     // test fonctionnement de classe CompareColorPair et de la surcharge
     CompareColorPair colorpair;
     bool res = colorpair(c1,c2);
-    qDebug() << res;
+    qDebug() <<"Bool "<< res;
 
 
     set<ColorPair,CompareColorPair> s;
@@ -43,12 +43,12 @@ int main(int argc, char *argv[])
     for (itr=s.begin();itr !=s.end();itr++)
         qDebug()<<&itr;
 
-//    XMLReader reader = XMLReader(s);
-//    reader.read("petitTheme.xml");
-/*
+    XMLReader reader = XMLReader(s);
+    reader.read("petitTheme.xml");
+
     XMLReader xml = XMLReader(s);
-    qDebug()<<xml.getSet();
-    */
+    set<ColorPair,CompareColorPair> set = xml.getSet();
+
 	w.show();
 	return a.exec();
 
