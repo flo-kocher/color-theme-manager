@@ -36,13 +36,13 @@ MainWindow::MainWindow(QWidget *parent)
     //récupération du path vers le dossier themes/
     QDir themes;
     qDebug()<<themes.currentPath();
-    QString themes_path = themes.currentPath().append("/../color-theme-manager-florentin/themes");
+    QString themes_path = themes.currentPath().append("/../color-theme-manager-florentin-master/themes");
     qDebug()<<themes_path;
     themes.setPath(themes_path);
 
     //idem pour le dossier icons/
     QDir icons;
-    QString icons_path = icons.currentPath().append("/../color-theme-manager-florentin/icons");
+    QString icons_path = icons.currentPath().append("/../color-theme-manager-florentin-master/icons");
     icons.setPath(icons_path);
 
     //création de listes des fichiers de chaque dossier
@@ -280,12 +280,12 @@ void MainWindow::on_pushButton_8_clicked()
     {
         QDir icons;
         //path vers le dossier icons/
-        QString icons_path = icons.currentPath().append("/../color-theme-manager-florentin/icons");
+        QString icons_path = icons.currentPath().append("/../color-theme-manager-florentin-master/icons");
         QPixmap icon = ui->label->pixmap();
         //on la déplace dans le dossier icons/
         icon.save(icons_path+"/"+ui->lineEdit_6->text()+".png");
         QDir themes;
-        QString themes_path = themes.currentPath().append("/../color-theme-manager-florentin/themes");
+        QString themes_path = themes.currentPath().append("/../color-theme-manager-florentin-master/themes");
         writeXMLFile(ui->lineEdit_6->text(),list,themes_path);
         synchronize_notifications("\nVotre thème : "+ui->lineEdit_6->text()+" a été créé avec succès");
 
@@ -340,7 +340,7 @@ void MainWindow::on_pushButton_2_clicked()
 // Bouton de modification/importation d'un thème déjà existant
 void MainWindow::on_pushButton_16_clicked()
 {
-    QString xml_file = QFileDialog::getOpenFileName(this, "Open a file", QDir::currentPath().append("/../color-theme-manager-florentin/themes"),"Theme Files (*.xml)");
+    QString xml_file = QFileDialog::getOpenFileName(this, "Open a file", QDir::currentPath().append("/../color-theme-manager-florentin-master/themes"),"Theme Files (*.xml)");
     QStringList list_of_files = xml_file.split(QLatin1Char('/'));
     ui->lineEdit_6->setText(list_of_files.at(list_of_files.count()-1));
 
