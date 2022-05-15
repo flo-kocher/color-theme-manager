@@ -3,52 +3,28 @@
 #include <ColorPair.h>
 #include <QDebug>
 
-/*  FAIRE UN FICHIER .CPP ET .H QUE QUE POUR XML READER !
- *
- *
- * FAIRE LES TESTS DANS LE MAIN
- * ET APPELER GENRE DES FONCTIONS QUI S'APELLENT
- * TEST_FONCTIONNALITE_1()
- *
- * ET LES APPELER UNE PAR UNE DANS LE MAIN
- *
- *
- *
- */
-
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 	MainWindow w;
+    /*//Test de la création de deux ColorPairs
     ColorPair c1 = ColorPair("Couleur 01","#003265ff","#123225ff");
     ColorPair c2 = ColorPair("Couleur 02","#00aeeaff","#00bfeaff");
-/*
-    QColor color = c1.fromRGBA("Couleur 01");
-    qDebug()<<color;
-    QString string = c1.toRGBA(color);
-    qDebug()<<string;
-*/
-    // test fonctionnement de classe CompareColorPair et de la surcharge
+
+    //Test fonctionnement de la classe CompareColorPair et de la surcharge
     CompareColorPair colorpair;
     bool res = colorpair(c1,c2);
     qDebug() <<"Bool "<< res;
+    */
 
-
+    /*//Test de l'utilisation de la fonction XMLReader::read()
     set<ColorPair,CompareColorPair> s;
-/*
-    s.insert(c1);
-    s.insert(c2);
-    qDebug()<<&s;
-    set<ColorPair,CompareColorPair>::iterator itr;
-    for (itr=s.begin();itr !=s.end();itr++)
-        qDebug()<<&itr;
-*/
     QFile file;
     file.setFileName("/home/flo/ihm/color-theme-manager-florentin/petitTheme.xml");
 
     XMLReader reader = XMLReader(s);
     reader.read(file);
-
+    */
 	w.show();
 	return a.exec();
 }

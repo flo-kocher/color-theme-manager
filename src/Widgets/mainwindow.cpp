@@ -66,6 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
         }
     }
 
+    //affichage d'une première paire de couleurs dans la page de création de thèmes
     QWidget *window = ui->tabWidget_3Page1;
     QWidget *st_widget = new QWidget();
 
@@ -203,20 +204,12 @@ void MainWindow::on_pushButton_13_clicked()
 
 void MainWindow::on_pushButton_23_clicked()
 {
-
     QString file_name = QFileDialog::getOpenFileName(this, "Open a file", QDir::homePath());
-    //QString file_name = QFileDialog::getOpenFileName(this, "Open a file", QDir::currentPath());
-
-    //QMessageBox::information(this,"..",file_name);
     ui->lineEdit_19->setText(file_name);
-
-
-    //ui->lineEdit_19->setText("Incroyanle");
 }
 
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
-    //std::cout<<"je suis appuyé"<<std::endl;
     item_theme = item->text();
 }
 
@@ -236,13 +229,12 @@ void MainWindow::on_pushButton_clicked()
     }
     else
     {
-        //qDebug()<<"File_name : "<<file_name<<" and theme name : "<<item_theme;
         synchronize_notifications("\nFile : "+file_name+" currently applying a theme");
     }
 
 }
 
-
+//Bouton d'ajout d'une paire de couleurs
 void MainWindow::on_pushButton_7_clicked()
 {
     QWidget *st_widget = new QWidget();
@@ -268,7 +260,7 @@ void MainWindow::on_pushButton_7_clicked()
     QWidget *first_widget = ui->stackedWidget->findChild<QWidget *>(first_widget_name);
 
     first_widget->layout()->addWidget(st_widget);
-
+    //on ajoute notre nouvelle paire créée dans la scrollArea
     ui->scrollArea->setWidget(first_widget);
     nb_st_widget++;
 }
@@ -370,6 +362,7 @@ void MainWindow::on_pushButton_16_clicked()
     QList<QLineEdit *> list_of_line_edit = scroll_widget -> findChildren<QLineEdit *> ();
 
     int i = 0;
+    //on parcours l'ensemble des codes hexadécimaux du set et on les place dans les zones de texte au fur et à mesure
     for (auto it = s.begin(); it != s.end(); ++it)
     {
         //qDebug() << "couleurs source et target: " << it->toRGBA(it->getColor1()) << it->toRGBA(it->getColor2());
