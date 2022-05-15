@@ -3,6 +3,8 @@
 Le but de ce projet était de réaliser une application Qt sur Linux en mode Desktop uniquement. Le principe est simple, on doit pouvoir créer ainsi qu'appliquer des thèmes sur des fichiers. Un thème est composé d'une liste de paires de couleurs source et target. Lorsqu'on applique un thème sur un fichier, on remplace alors les occurences de couleurs source par ses couleurs target. De plus, il sera possible de créer ses propres thèmes. Tout cela en devant suivre un cahier des charges bien précis.
 
 ## Fonctionnement de l'application
+
+
 ### Mise en page de l'application
 
 L'application est une application multi-page où il est possible de naviguer entre 3 pages : la vue principale où sont disposées la totalité des thèmes créés par l'utilisateur, une deuxième page où l'utilisateur pourra chercher un thème et choisir un fichier sur lequel il souhaitera appliquer ce thème et une dernière page qui fera tout ce qui est création de thèmes.
@@ -35,3 +37,21 @@ Si l'utilisateur souhaite modifier l'un de ses thèmes ou en importer un nouveau
 #### Importer un thème depuis internet
 
 N'ayant pas fait les fonctions permettant de récupérer un xml par lien internet, cet onglet n'est donc pas implémenté, cependant son contenu reste présentable. On retrouve le choix d'une image ainsi que d'un nom de thème. A la différence de la page de création de thème, ici on demande à l'utilisateur d'écrire son lien internet dans la zone de texte. Le bouton "Sauvegarder" permettra donc de créer le thème et le bouton "Mettre à jour" nous renverrait alors dans notre premier onglet afin que l'utilisateur puisse, avant de sauvegarder son thème par lien internet, modifier quelques paires de couleurs.
+
+## Fonctionnalités
+
+### Fonctionnalités implémentées
+
+Les fonctionnalités implémentées dans mon application sont les suivantes :
+- interface multi-pages avec changement de pages par l'utilisation de signaux
+- représentation d'un thème par un fichier xml et une image au format png (au lieu de la création d'une classe *Theme*)
+- affichage de ces thèmes dans une vue principale
+- système de drag and drop d'un fichier xml pour importer un thème qui fonctionne peu importe où dans l'application plutôt que simplement sur la page spécifique (Importer un thème existant)
+- messages d'information lorsque l'utilisateur réussit une action ou lorsque au contraire il manque à, par exemple, donner un nom à son thème qu'il souhaite créer
+- aucun téléchargement n'est bloquant
+- création de thème
+- modification d'un thème existant
+
+### Fonctionnalités non implémentées
+
+Les fonctionnalités non implémentées dans mon application sont les suivantes :
