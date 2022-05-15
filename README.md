@@ -2,7 +2,7 @@
 
 Le but de ce projet était de réaliser une application Qt sur Linux en mode Desktop uniquement. Le principe est simple, on doit pouvoir créer ainsi qu'appliquer des thèmes sur des fichiers. Un thème est composé d'une liste de paires de couleurs source et target. Lorsqu'on applique un thème sur un fichier, on remplace alors les occurences de couleurs source par ses couleurs target. De plus, il sera possible de créer ses propres thèmes. Tout cela en devant suivre un cahier des charges bien précis.
 
-**Attention :** si aucun thème ne s'affiche, sur la vue principale, c'est que les appels à currentPath() ne mène pas au répertoire où se trouve notre dépot.
+**Attention :** si aucun thème ne s'affiche sur la vue principale, c'est que les appels à currentPath() ne mène pas au répertoire où se trouve notre dépot.
 
 ## **Fonctionnement de l'application**
 
