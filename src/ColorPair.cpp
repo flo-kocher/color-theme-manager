@@ -34,8 +34,8 @@ QColor ColorPair::fromRGBA(const QString &colorStr){
     first_part.remove(1,6);
     cp_colorStr.remove(0,1);
     cp_colorStr.remove(6,2);
-    qDebug() << colorStr;
-    qDebug() << first_part+cp_colorStr;
+    //qDebug() << colorStr;
+    //qDebug() << first_part+cp_colorStr;
     color.setNamedColor(first_part+cp_colorStr);
     return color;
 }
@@ -44,10 +44,10 @@ QString ColorPair::getId(){
     return m_id;
 }
 
-QColor ColorPair::getColor1(){
+QColor ColorPair::getColor1() const{
     return color1;
 }
-QColor ColorPair::getColor2(){
+QColor ColorPair::getColor2() const {
     return color2;
 }
 
@@ -77,26 +77,37 @@ set<ColorPair,CompareColorPair> XMLReader::getSet(){
     return set_compare;
 }
 
-void XMLReader::read(const QString &filename){
-    QFile file(filename);
-    file.open(stderr,QIODevice::ReadOnly | QFile::Text);
-    //lire ligne par ligne et genre stocker les balises dans un ColorPair/jsplus quoi et les mettre dans le set
-
-
-/*
-    QXmlStreamReader reader;
-    reader.setDevice(&file);
-    reader.readNext();
-    reader.readNext();
-    reader.readNext();
-    qDebug()<<reader.readElementText();
-
-    while(!reader.atEnd()){
-        if(reader.isStartElement() == false){
-            if(reader.name() == "colors"){
-                reader.readNext();
-            }
-        }
+bool XMLReader::read(QFile& file)
+{
+    //mon DomDocument
+    QDomDocument xmlBOM;
+    //essaye de lire le fichier
+    if (!file.open(QIODevice::ReadOnly ))
+    {
+        //Affiche une erreur si on arrive pas à trouver le fichier
+        std::cerr << "Lecture du dossier impossible" << std::endl;
+        return false;
     }
-    */
+    //on ajoute notre fichier à mon DomDocument
+    xmlBOM.setContent(&file);
+    file.close();
+
+    QDomElement dom_tree = xmlBOM.documentElement();
+    QDomElement xml = dom_tree.firstChild().toElement();
+    while(!xml.isNull())
+    {
+        if (xml.tagName() == "color")
+        {
+            QString _id = xml.attribute("id","No id found");
+            QColor _source = ColorPair::fromRGBA(xml.attribute("source","No source found"));
+            QColor _target = ColorPair::fromRGBA(xml.attribute("target","No target found"));
+            //on fait notre paire de couleurs
+            ColorPair mycolor(_id, _source, _target);
+            //et on l'insère dans le set
+            this->set_compare.insert(mycolor);
+        }
+        xml = xml.nextSibling().toElement();
+    }
+
+    return true;
 }

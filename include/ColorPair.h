@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <set>
 #include <QFile>
+#include <QDomDocument>
+#include <iostream>
 
 using namespace std;
 
@@ -24,8 +26,8 @@ public:
 
     //getter
     QString getId();
-    QColor getColor1();
-    QColor getColor2();
+    QColor getColor1()const ;
+    QColor getColor2()const ;
     //setter
     void setId(QString &id);
     void setColor1(QColor &color);
@@ -45,7 +47,7 @@ public:
     XMLReader(); //con. vide
     XMLReader(const set<ColorPair,CompareColorPair> &compare);
 
-    void read(const QString &filename);
+    bool read(QFile& file);
 
     set<ColorPair,CompareColorPair> getSet();
 };

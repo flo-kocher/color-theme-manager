@@ -35,21 +35,20 @@ int main(int argc, char *argv[])
 
 
     set<ColorPair,CompareColorPair> s;
-
+/*
     s.insert(c1);
     s.insert(c2);
     qDebug()<<&s;
     set<ColorPair,CompareColorPair>::iterator itr;
     for (itr=s.begin();itr !=s.end();itr++)
         qDebug()<<&itr;
+*/
+    QFile file;
+    file.setFileName("/home/flo/ihm/color-theme-manager-florentin/petitTheme.xml");
 
     XMLReader reader = XMLReader(s);
-    reader.read("petitTheme.xml");
-
-    XMLReader xml = XMLReader(s);
-    set<ColorPair,CompareColorPair> set = xml.getSet();
+    reader.read(file);
 
 	w.show();
 	return a.exec();
-
 }

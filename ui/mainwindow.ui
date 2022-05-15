@@ -27,7 +27,7 @@
      <string notr="true">background-color:white</string>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="vue_principale">
      <widget class="QWidget" name="widget" native="true">
@@ -42,19 +42,6 @@
       <property name="styleSheet">
        <string notr="true">border:1px solid black</string>
       </property>
-      <widget class="QLineEdit" name="lineEdit_3">
-       <property name="geometry">
-        <rect>
-         <x>60</x>
-         <y>80</y>
-         <width>381</width>
-         <height>25</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Chercher nom d'un thème</string>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_19">
        <property name="geometry">
         <rect>
@@ -75,9 +62,9 @@
        <property name="geometry">
         <rect>
          <x>30</x>
-         <y>130</y>
+         <y>90</y>
          <width>891</width>
-         <height>351</height>
+         <height>391</height>
         </rect>
        </property>
        <property name="viewMode">
@@ -279,6 +266,10 @@ thème</string>
          <height>25</height>
         </rect>
        </property>
+       <property name="styleSheet">
+        <string notr="true">border:1px solid black;
+</string>
+       </property>
        <property name="text">
         <string>Appliquer</string>
        </property>
@@ -297,19 +288,6 @@ thème</string>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="lineEdit_4">
-       <property name="geometry">
-        <rect>
-         <x>140</x>
-         <y>240</y>
-         <width>381</width>
-         <height>25</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Chercher nom d'un thème</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_51">
@@ -358,9 +336,9 @@ thème</string>
        <property name="geometry">
         <rect>
          <x>55</x>
-         <y>281</y>
+         <y>241</y>
          <width>851</width>
-         <height>161</height>
+         <height>201</height>
         </rect>
        </property>
        <property name="viewMode">
@@ -402,6 +380,12 @@ thème</string>
         <width>191</width>
         <height>201</height>
        </rect>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>191</width>
+        <height>16777215</height>
+       </size>
       </property>
       <property name="styleSheet">
        <string notr="true">border:1px solid black</string>
@@ -692,7 +676,8 @@ thème</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">border:1px solid black</string>
+         <string notr="true">border:1px solid black;
+</string>
         </property>
         <property name="text">
          <string>Sauvegarder</string>

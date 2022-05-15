@@ -18,6 +18,7 @@ public:
 
     void dragEnterEvent(QDragEnterEvent *e) override;
     void dropEvent(QDropEvent *e) override;
+    void writeXMLFile(QString themename, QList<QLineEdit *> list, QString theme_folder_path);
 
 
 private slots:

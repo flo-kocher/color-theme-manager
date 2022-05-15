@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "ColorPair.h"
-#include <iostream>
 #include <string>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -13,8 +12,10 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
-//variable globale permettant de garder en mémoire le dernier thème sélectionner dans Appliquer un thème
+//variable globale permettant de garder en mémoire le dernier thème sélectionner dans Appliquer/modifier un thème
 QString item_theme;
+//variable globale permettant de garder en mémoire la dernière image importée dans Appliquer/modifier un thème
+QString theme_icon;
 
 int nb_st_widget;
 
@@ -25,46 +26,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     nb_st_widget = 0;
 
+    //autorise le fait de faire des drags & drops
+    //devrait normalement n'être que possible sur le page d'importation de thème, mais malheuresement je n'ai pas réussi à le faire spécifiquement pour cette page
     setAcceptDrops(true);
-
-
-
-    /*
-    int id = ui->stackedWidget->currentIndex();
-    std::cout<<id<<std::endl;
-
-    QStackedWidget *pages = ui->stackedWidget;
-    int num  = pages->count();
-    std::cout<<num<<std::endl;
-    */
-
-    //index:0 page 1
-    //index:1 page 2
-    //ui->stackedWidget->setCurrentIndex(1);
-
-
-    // utiliser ça pour accéder au path du projet et donc aux dossiers qui contiendront les icons et les xml
-    //QString file_name = QFileDialog::getOpenFileName(this, "Open a file", QDir::currentPath());
-
-    //https://stackoverflow.com/questions/37331270/how-to-create-grid-style-qlistwidget
-
-
-
-    /*
-    //aller dans le dossier themes/ et voir les fichiers présents dedans
-    QDir themes = QDir::currentPath();
-    //std::cout<<themes.dirName()<<std::endl;
-    QDir p;
-    QString path = p.currentPath().append("/themes");
-    p.setPath(path);
-    qDebug()<<p.dirName();
-    qDebug()<<p.count();
-    QStringList sl = p.entryList();
-    for(int i = 0; i < sl.size(); i++)
-    {
-        qDebug()<<sl.at(i);
-    }
-    */
 
 
     //Affichage des thèmes déjà enregistrées dans l'application dans les pages Vue Principale et Appliquer un thème
@@ -102,11 +66,9 @@ MainWindow::MainWindow(QWidget *parent)
         }
     }
 
-    /*
     QWidget *window = ui->tabWidget_3Page1;
     QWidget *st_widget = new QWidget();
 
-    //QString last_widget = QString("st_widget").arg(nb_st_widget);
     //donne comme nom au widget créé, "st_widget" + le nombre de st_widget actuellement sur notre interface + 1
     QString current_widget_name = "st_widget" + QString::number(nb_st_widget);
     st_widget->setObjectName(current_widget_name);
@@ -114,39 +76,11 @@ MainWindow::MainWindow(QWidget *parent)
     st_widget->setParent(window);
     QLineEdit *line_edit_s = new QLineEdit();
     line_edit_s->setFixedWidth(180);
+    line_edit_s->setObjectName("line_edit_s"+QString::number(nb_st_widget));
     QSpacerItem *spacer_1 = new QSpacerItem(200,20);
     QLineEdit *line_edit_t = new QLineEdit();
     line_edit_t->setFixedWidth(180);
-    QSpacerItem *spacer_2 = new QSpacerItem(150,20);
-    QPushButton *button = new QPushButton("Supprimer");
-
-    QHBoxLayout *layoutt = new QHBoxLayout(st_widget);
-    layoutt->addWidget(line_edit_s);
-    layoutt->addSpacerItem(spacer_1);
-    layoutt->addWidget(line_edit_t);
-    layoutt->addSpacerItem(spacer_2);
-    layoutt->addWidget(button);
-
-    st_widget->move(50,270);
-    st_widget->show();
-    nb_st_widget++;
-    */
-
-    QWidget *window = ui->tabWidget_3Page1;
-    QWidget *st_widget = new QWidget();
-    //ui->scrollArea->setWidget(st_widget);
-
-    //QString last_widget = QString("st_widget").arg(nb_st_widget);
-    //donne comme nom au widget créé, "st_widget" + le nombre de st_widget actuellement sur notre interface + 1
-    QString current_widget_name = "st_widget" + QString::number(nb_st_widget);
-    st_widget->setObjectName(current_widget_name);
-
-    st_widget->setParent(window);
-    QLineEdit *line_edit_s = new QLineEdit();
-    line_edit_s->setFixedWidth(180);
-    QSpacerItem *spacer_1 = new QSpacerItem(200,20);
-    QLineEdit *line_edit_t = new QLineEdit();
-    line_edit_t->setFixedWidth(180);
+    line_edit_t->setObjectName("line_edit_t"+QString::number(nb_st_widget));
     QSpacerItem *spacer_2 = new QSpacerItem(150,20);
     QPushButton *button = new QPushButton("Supprimer");
 
@@ -158,13 +92,9 @@ MainWindow::MainWindow(QWidget *parent)
     layoutt->addWidget(line_edit_t);
     layoutt->addSpacerItem(spacer_2);
     layoutt->addWidget(button);
-
-    //st_widget->move(50,270);
-    //st_widget->show();
+    //incrémentation du conteneur du nombre total de source-target widgets dans la page de création de thème
     nb_st_widget++;
-
-    // /////////////////////////////////////////////////////////////////////////////////
-    //le mets bien dedans, voir le code qu'il faut qu'on garde et ce qu'il faut enlever
+    //ajout du widget dans la scroll area
     ui->scrollArea->setWidget(st_widget);
 }
 
@@ -173,13 +103,14 @@ MainWindow::~MainWindow()
 	delete ui;
 }
 
+//surcharge de la fonction d'évènement de drag
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
     if (event->mimeData()->hasUrls())
         event->acceptProposedAction();
-
 }
 
+//surcharge de la fonction d'évènement de drop
 void MainWindow::dropEvent(QDropEvent *event)
 {
     foreach (const QUrl &url, event->mimeData()->urls())
@@ -187,8 +118,11 @@ void MainWindow::dropEvent(QDropEvent *event)
         QString file_name = url.toLocalFile();
         qDebug() << "Dropped file:" << file_name;
     }
+    //textBrowser->setPlainText(event->mimeData()->text());
 }
 
+//fonction appelé lorsque l'on souhaite notifier dans la zone de notifications
+//synchronise la totalité des zones de notifications sur chaque page par la même occasion
 void MainWindow::synchronize_notifications(QString text_to_add)
 {
     QString last_text = ui->label_main->text();
@@ -197,6 +131,40 @@ void MainWindow::synchronize_notifications(QString text_to_add)
     ui->label_5->setText(last_text+"\n"+text_to_add);
 }
 
+//fonction permettant de créer un fichier XML en utilisant les target et sources ajoutés dans la page de création de thème
+void MainWindow::writeXMLFile(QString themename, QList<QLineEdit *> list, QString theme_folder_path){
+    //il faut encore déplacer le fichier dans le dossier themes/
+    QFile xmlfile(theme_folder_path+"/"+themename.append(".xml"));
+    if (!xmlfile.open(QFile::WriteOnly | QFile::Text ))
+    {
+        qDebug() << "Erreur : fichier déjà ouvert";
+        xmlfile.close();
+        return;
+    }
+    QTextStream xmlContent(&xmlfile);
+
+    QDomDocument document;
+    //make the root element
+    QDomElement root = document.createElement("colors");
+    //add it to document
+    document.appendChild(root);
+
+    for(int i = 0; i < list.count(); i+=2)
+    {
+        //création des éléments 'color' de l'xml
+        QDomElement color = document.createElement("color");
+        color.setAttribute("target", list.at(i+1)->text()); //target
+        color.setAttribute("id", "Couleur "+QString::number(i)); //id
+        color.setAttribute("source", list.at(i)->text()); //source
+        root.appendChild(color);
+    }
+
+    xmlContent << document.toString();
+}
+
+
+
+//ci-dessous les fonctions permettant de changer de pages
 void MainWindow::on_pushButton_4_clicked()
 {
     ui->stackedWidget->setCurrentIndex(1);
@@ -255,98 +223,38 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 // Bouton d'application d'un thème sur un fichier
 void MainWindow::on_pushButton_clicked()
 {
+    /*
+    border:1px solid black;
+    color: white;
+    background-color: rgb(238, 238, 236);
+     */
     QString file_name = ui->lineEdit_19->text();
-    //qDebug()<<"File_name : "<<file_name<<" and theme name : "<<item_theme;
-    synchronize_notifications(file_name);
+    if(item_theme == "" || file_name == "")
+    {
+        ui->pushButton->setStyleSheet("border:1px solid black;color: white;background-color: rgb(238, 238, 236);");
+        synchronize_notifications("\nFile name missing or no selected theme");
+    }
+    else
+    {
+        //qDebug()<<"File_name : "<<file_name<<" and theme name : "<<item_theme;
+        synchronize_notifications("\nFile : "+file_name+" currently applying a theme");
+    }
+
 }
 
 
 void MainWindow::on_pushButton_7_clicked()
 {
-    /*
-    QWidget *window = ui->tabWidget_3Page1;
     QWidget *st_widget = new QWidget();
 
-    //QString last_widget = QString("st_widget").arg(nb_st_widget);
-    //donne comme nom au widget créé, "st_widget" + le nombre de st_widget actuellement sur notre interface + 1
-    QString current_widget_name = "st_widget" + QString::number(nb_st_widget);
-    st_widget->setObjectName(current_widget_name);
-
-    st_widget->setParent(window);
-    QLineEdit *line_edit_s = new QLineEdit();
-    line_edit_s->setFixedWidth(180);
-    QSpacerItem *spacer_1 = new QSpacerItem(200,20);
-    QLineEdit *line_edit_t = new QLineEdit();
-    line_edit_t->setFixedWidth(180);
-    QSpacerItem *spacer_2 = new QSpacerItem(150,20);
-    QPushButton *button = new QPushButton("Supprimer");
-
-    QHBoxLayout *layoutt = new QHBoxLayout(st_widget);
-    layoutt->addWidget(line_edit_s);
-    layoutt->addSpacerItem(spacer_1);
-    layoutt->addWidget(line_edit_t);
-    layoutt->addSpacerItem(spacer_2);
-    layoutt->addWidget(button);
-
-    QString last_widget_name = "st_widget" + QString::number(nb_st_widget-1);
-    QWidget *last_widget = ui->stackedWidget->findChild<QWidget *>(last_widget_name);
-    //qDebug()<<last_widget->pos().x();
-
-    st_widget->move(50,last_widget->pos().y()+40);
-    st_widget->show();
-    nb_st_widget++;
-    */
-
-    /*
-
-    //mettre ce code dans une fonction pour créer le widget dynamique qui fait les sources/targets
-    QWidget *window = ui->tabWidget_3Page1;
-    QWidget *st_widget = new QWidget();
-    nb_st_widget++;
-
-    //QString last_widget = QString("st_widget").arg(nb_st_widget);
-    //donne comme nom au widget créé, "st_widget" + le nombre de st_widget actuellement sur notre interface + 1
-    QString last_widget = "st_widget" + QString::number(nb_st_widget);
-    st_widget->setObjectName(last_widget);
-
-    st_widget->setParent(window);
-    QLineEdit *line_edit_s = new QLineEdit();
-    QSpacerItem *spacer_1 = new QSpacerItem(200,20);
-    QLineEdit *line_edit_t = new QLineEdit();
-    QPushButton *button = new QPushButton("Supprimer");
-
-    QHBoxLayout *layoutt = new QHBoxLayout(st_widget);
-    layoutt->addWidget(line_edit_s);
-    layoutt->addSpacerItem(spacer_1);
-    layoutt->addWidget(line_edit_t);
-    layoutt->addSpacerItem(spacer_1);
-    layoutt->addWidget(button);
-
-    st_widget->move(50,300);
-    st_widget->show();
-
-
-    //récupère le dernier st_widget créé
-    //QWidget *searched = ui->stackedWidget->findChild<QWidget *>(last_widget);
-    //qDebug()<<searched->objectName();
-
-    */
-
-    // il faut maintenant récupérer la position du dernier st_widget
-    // puis la mettre un peu en dessous en hauteur
-
-    //ensuite mettre tous ces codes au début de cette fonction pour qu'on puisse appuyer plusieurs fois sur le bouton et afficher plusieurs st_widget les uns après les autres
-
-    QWidget *st_widget = new QWidget();
-
-    //QString last_widget = QString("st_widget").arg(nb_st_widget);
-    //donne comme nom au widget créé, "st_widget" + le nombre de st_widget actuellement sur notre interface + 1
     QString current_widget_name = "st_widget" + QString::number(nb_st_widget);
     st_widget->setObjectName(current_widget_name);
 
     QLineEdit *line_edit_s = new QLineEdit();
+    line_edit_s->setObjectName("line_edit_s"+QString::number(nb_st_widget));
     QSpacerItem *spacer_1 = new QSpacerItem(200,20);
     QLineEdit *line_edit_t = new QLineEdit();
+    line_edit_t->setObjectName("line_edit_t"+QString::number(nb_st_widget));
     QPushButton *button = new QPushButton("Supprimer");
 
     QHBoxLayout *layoutt = new QHBoxLayout(st_widget);
@@ -358,7 +266,6 @@ void MainWindow::on_pushButton_7_clicked()
 
     QString first_widget_name = "st_widget" + QString::number(0);
     QWidget *first_widget = ui->stackedWidget->findChild<QWidget *>(first_widget_name);
-    //qDebug()<<first_widget->objectName();
 
     first_widget->layout()->addWidget(st_widget);
 
@@ -372,45 +279,58 @@ void MainWindow::on_pushButton_8_clicked()
     QWidget *scroll_widget = ui->scrollArea->widget();
     //on fait une liste des QLineEdit pour récupérer les codes hexadécimaux ajoutés
     QList<QLineEdit *> list = scroll_widget -> findChildren<QLineEdit *> ();
-    for(int i = 0; i < list.count(); i++)
-    {
-        qDebug()<<list.at(i)->text();
-    }
 
-    /*
-    QWidget *all_st_widgets = ui->scrollArea->findChild<QWidget *>("st_widget0");
-    qDebug()<<all_st_widgets->objectName();
-
-    //QLayout *st_layout = all_st_widgets->layout();
-    QLayout *layout = all_st_widgets -> findChild<QLayout *> ();
-    QList<QWidget *> list = layout -> findChildren<QWidget *> ();
-    for(int i = 0; i < list.count(); i++)
+    if(ui->label->pixmap().isNull() || ui->lineEdit_6->text() == "")
+        synchronize_notifications("\nPas d'icône de thème importé ou pas de nom du thème choisi");
+    else
     {
-        qDebug()<<list.at(i);
+        QDir icons;
+        //path vers le dossier icons/
+        QString icons_path = icons.currentPath().append("/icons");
+        QPixmap icon = ui->label->pixmap();
+        //on la déplace dans le dossier icons/
+        icon.save(icons_path+"/"+ui->lineEdit_6->text()+".png");
+        QDir themes;
+        QString themes_path = themes.currentPath().append("/themes");
+        writeXMLFile(ui->lineEdit_6->text(),list,themes_path);
+        synchronize_notifications("\nVotre thème : "+ui->lineEdit_6->text()+" a été créé avec succès");
+
+        //code permettant d'ajouter le thème venant d'être créé à la vue principale
+        QListWidgetItem *theme = new QListWidgetItem;
+        theme->setText(ui->lineEdit_6->text()+".xml");
+        theme->setIcon(QIcon(icons_path+"/"+ui->lineEdit_6->text()+".png"));
+        theme->setSizeHint(QSize(150,150));
+
+        QListWidgetItem *theme_bis = new QListWidgetItem;
+        theme_bis->setText(ui->lineEdit_6->text()+".xml");
+        theme_bis->setIcon(QIcon(icons_path+"/"+ui->lineEdit_6->text()+".png"));
+        theme_bis->setSizeHint(QSize(150,150));
+
+        ui->listWidget_2->addItem(theme);
+        ui->listWidget->addItem(theme_bis);
     }
-    */
 }
 
 // Bouton d'ajout d'image pour la création d'un thème
 void MainWindow::on_pushButton_6_clicked()
 {
-    QString picture_url = QFileDialog::getOpenFileName(this, "Open a file", QDir::homePath());
-    QPixmap *pix = new QPixmap(picture_url);
+    theme_icon = QFileDialog::getOpenFileName(this, "Open a file", QDir::homePath());
+    QPixmap *pix = new QPixmap(theme_icon);
     if(pix->width() < 32 && pix->height() < 32)
         synchronize_notifications("\nTaille de l'icône du thème trop petite (32x32 pixels minimum)");
     else
-        ui->label->setPixmap(QPixmap(picture_url));
+        ui->label->setPixmap(QPixmap(theme_icon));
 }
 
 // Bouton d'ajout d'image pour la création d'un thème par lien internet
 void MainWindow::on_pushButton_9_clicked()
 {
-    QString picture_url = QFileDialog::getOpenFileName(this, "Open a file", QDir::homePath());
-    QPixmap *pix = new QPixmap(picture_url);
+    theme_icon = QFileDialog::getOpenFileName(this, "Open a file", QDir::homePath());
+    QPixmap *pix = new QPixmap(theme_icon);
     if(pix->width() < 32 && pix->height() < 32)
         synchronize_notifications("\nTaille de l'icône du thème trop petite (32x32 pixels minimum)");
     else
-        ui->label_2->setPixmap(QPixmap(picture_url));
+        ui->label_2->setPixmap(QPixmap(theme_icon));
 }
 
 // Bouton pour générer plusieurs source_target d'un coup avec la spin box
@@ -430,29 +350,35 @@ void MainWindow::on_pushButton_16_clicked()
     QStringList list_of_files = xml_file.split(QLatin1Char('/'));
     ui->lineEdit_6->setText(list_of_files.at(list_of_files.count()-1));
 
-/*
-        XMLReader docu;
-        QFile fichier(list_of_files.at(list_of_files.count()-1));
-        XMLReader::SetType setFile = docu.read(fichier);
+    set<ColorPair,CompareColorPair> s;
+    XMLReader docu = XMLReader(s);
+    QFile fichier(xml_file);
+    docu.read(fichier);
 
-        for (auto it = setFile.begin(); it != setFile.end(); ++it)
-        {
-                qDebug() << "voilà les couleurs: " << it->toRGBA(it->getColor1()) << it->toRGBA(it->getColor2()); // afficher les valeurs de toutes les paires du fichier
+    //set contenu dans set_compare
+    s = docu.getSet();
+    //on rajoute des emplacements de source-target dans l'autre page pour pouvoir afficher les valeurs hexadecimales déjà dans le fichier XML
+    if(nb_st_widget < s.size())
+    {
+        for(int i = 0; i < s.size(); i++)
+            on_pushButton_7_clicked();
+    }
 
+    //on récupère le widget de la scroll area
+    QWidget *scroll_widget = ui->scrollArea->widget();
+    //on récupère la liste des QLineEdit pouvoir y afficher les sources et targets du fichier XML
+    QList<QLineEdit *> list_of_line_edit = scroll_widget -> findChildren<QLineEdit *> ();
 
-                QListWidgetItem * targetTag = new QListWidgetItem(it->toRGBA(it->getColor1()));
-                QListWidgetItem * sourceTag = new QListWidgetItem(it->toRGBA(it->getColor2()));
+    int i = 0;
+    for (auto it = s.begin(); it != s.end(); ++it)
+    {
+        //qDebug() << "couleurs source et target: " << it->toRGBA(it->getColor1()) << it->toRGBA(it->getColor2());
+        list_of_line_edit.at(i)->setText(it->toRGBA(it->getColor1()));
+        i++;
+        list_of_line_edit.at(i)->setText(it->toRGBA(it->getColor2()));
+        i++;
+    }
 
-                targetTag->setFlags(targetTag->flags() | Qt::ItemIsEditable);
-                sourceTag->setFlags(sourceTag->flags() | Qt::ItemIsEditable);
-
-                ui->listSource->addItem(sourceTag);
-                ui->listTarget->addItem(targetTag);
-
-        }
-
-*/
     ui->tabWidget_3->setCurrentIndex(0);
-
 }
 
